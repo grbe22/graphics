@@ -121,7 +121,18 @@ function makeCone (radialdivision, heightdivision) {
 //recursive subdivision method).
 //
 function makeSphere (slices, stacks) {
-    // fill in your code here.
+    // subdivision is an integer value
+	var w = 0.5;
+	// quality control
+	if (subdivisions < 1) {
+		subdivisions = 1;
+	}
+	genFace(w, 0, 0, subdivisions);
+	genFace(w, Math.PI / 2, 0, subdivisions);
+	genFace(w, Math.PI, 0, subdivisions);
+	genFace(w, 3 * (Math.PI / 2), 0, subdivisions);
+	genFace(w, 0, Math.PI / 2, subdivisions);
+	genFace(w, 0, 3 * (Math.PI / 2), subdivisions);
 }
 
 
