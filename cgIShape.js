@@ -122,6 +122,7 @@ function makeCone (radialdivision, heightdivision) {
 //
 function makeSphere (slices, stacks) {
     // subdivision is an integer value
+	subdivisions = slices;
 	var w = 0.5;
 	// quality control
 	if (subdivisions < 1) {
