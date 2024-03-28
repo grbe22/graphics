@@ -93,12 +93,15 @@
       points = [];
       indices = [];
       bary = [];
-      
+      console.log("?.?");
       // make your shape based on type
       if (curShape == CUBE) makeCube (division1);
       else if (curShape == CYLINDER) makeCylinder ( division1, division2);
       else if (curShape == CONE) makeCone ( division1, division2);
-      else if (curShape == SPHERE) makeSphere ( division1, division2);
+      else if (curShape == SPHERE) {
+		  console.log("???");
+		  makeSphere ( division1, division2);
+	  }
       else
           console.error(`Bad object type`);
           

@@ -120,22 +120,47 @@ function makeCone (radialdivision, heightdivision) {
 // on spherical coordinates as described in the video (as opposed to the
 //recursive subdivision method).
 //
-function makeSphere (slices, stacks) {
-    // subdivision is an integer value
-	subdivisions = slices;
-	var w = 0.5;
-	// quality control
-	if (subdivisions < 1) {
-		subdivisions = 1;
-	}
-	genFace(w, 0, 0, subdivisions);
-	genFace(w, Math.PI / 2, 0, subdivisions);
-	genFace(w, Math.PI, 0, subdivisions);
-	genFace(w, 3 * (Math.PI / 2), 0, subdivisions);
-	genFace(w, 0, Math.PI / 2, subdivisions);
-	genFace(w, 0, 3 * (Math.PI / 2), subdivisions);
-}
+function makeSphere(slices, stacks) {
+    var vertices = [];
+    var normals = [];
+    var indices = [];
+	var radius = 0.5;
+    console.log("Pee");
 
+    for (var lat = 0; lat <= stacks; lat++) {
+        var theta = lat * Math.PI / stacks;
+        var sinTheta = Math.sin(theta);
+        var cosTheta = Math.cos(theta);
+
+        for (var long = 0; long <= slices; long++) {
+            var phi = long * 2 * Math.PI / slices;
+            var sinPhi = Math.sin(phi);
+            var cosPhi = Math.cos(phi);
+
+            var x = cosPhi * sinTheta;
+            var y = cosTheta;
+            var z = sinPhi * sinTheta;
+            var u = 1 - (long / slices);
+            var v = 1 - (lat / stacks);
+
+            vertices.push(radius * x, radius * y, radius * z);
+            normals.push(x, y, z);
+
+            if (lat < stacks && long < slices) {
+                var first = (lat * (slices + 1)) + long;
+                var second = first + slices + 1;
+                var p1 = [vertices[first * 3], vertices[first * 3 + 1], vertices[first * 3 + 2]];
+                var p2 = [vertices[second * 3], vertices[second * 3 + 1], vertices[second * 3 + 2]];
+                var p3 = [vertices[(first + 1) * 3], vertices[(first + 1) * 3 + 1], vertices[(first + 1) * 3 + 2]];
+                addTri(p1, p2, p3);
+                var p4 = [vertices[second * 3], vertices[second * 3 + 1], vertices[second * 3 + 2]];
+                var p5 = [vertices[(second + 1) * 3], vertices[(second + 1) * 3 + 1], vertices[(second + 1) * 3 + 2]];
+                var p6 = [vertices[(first + 1) * 3], vertices[(first + 1) * 3 + 1], vertices[(first + 1) * 3 + 2]];
+                addTri(p4, p5, p6);
+            }
+        }
+    }
+}
 
 ////////////////////////////////////////////////////////////////////
 //
