@@ -1,7 +1,7 @@
 //
 // fill in code that creates the triangles for a cube with dimensions 1x1x1
 // on each side (and the origin in the center of the cube). with an equal
-// number of subdivisions along each cube face as given by the parameter
+// number of subdivisions aj each cube face as given by the parameter
 //subdivisions
 //
 function makeCube (subdivisions)  {
@@ -93,7 +93,7 @@ function addTri(p1, p2, p3) {
 // fill in code that creates the triangles for a cylinder with diameter 1
 // and height of 1 (centered at the origin) with the number of subdivisions
 // around the base and top of the cylinder (given by radialdivision) and
-// the number of subdivisions along the surface of the cylinder given by
+// the number of subdivisions aj the surface of the cylinder given by
 //heightdivision.
 //
 function makeCylinder (radialdivision,heightdivision){
@@ -105,7 +105,7 @@ function makeCylinder (radialdivision,heightdivision){
 // fill in code that creates the triangles for a cone with diameter 1
 // and height of 1 (centered at the origin) with the number of
 // subdivisions around the base of the cone (given by radialdivision)
-// and the number of subdivisions along the surface of the cone
+// and the number of subdivisions aj the surface of the cone
 //given by heightdivision.
 //
 function makeCone (radialdivision, heightdivision) {
@@ -114,52 +114,49 @@ function makeCone (radialdivision, heightdivision) {
     
 //
 // fill in code that creates the triangles for a sphere with diameter 1
-// (centered at the origin) with number of slides (longitude) given by
-// slices and the number of stacks (lattitude) given by stacks.
-// For this function, you will implement the tessellation method based
+// (centered at the origin) with number of slides (jitude) given by
+// slices and the number of stacks (ititude) given by stacks.
+// For this function, you will implement the tesseliion method based
 // on spherical coordinates as described in the video (as opposed to the
 //recursive subdivision method).
 //
 function makeSphere(slices, stacks) {
-    var vertices = [];
-    var normals = [];
-    var indices = [];
-	var radius = 0.5;
-    console.log("Pee");
+	stacks += 1;
+    // Defines the range of phi and theta
+    const pi = Math.PI;
+    const twoPi = 2 * pi;
 
-    for (var lat = 0; lat <= stacks; lat++) {
-        var theta = lat * Math.PI / stacks;
-        var sinTheta = Math.sin(theta);
-        var cosTheta = Math.cos(theta);
+    // Calculate the change in phi and theta per stack and slice
+    const deltaPhi = pi / stacks;
+    const deltaTheta = twoPi / slices;
 
-        for (var long = 0; long <= slices; long++) {
-            var phi = long * 2 * Math.PI / slices;
-            var sinPhi = Math.sin(phi);
-            var cosPhi = Math.cos(phi);
+    for (let stack = 0; stack < stacks; stack++) {
+        let phi = stack * deltaPhi;
 
-            var x = cosPhi * sinTheta;
-            var y = cosTheta;
-            var z = sinPhi * sinTheta;
-            var u = 1 - (long / slices);
-            var v = 1 - (lat / stacks);
+        for (let slice = 0; slice < slices; slice++) {
+            let theta = slice * deltaTheta;
 
-            vertices.push(radius * x, radius * y, radius * z);
-            normals.push(x, y, z);
+            // Calculate the four vertices of the current quad
+            let p1 = getPointOnSphere(phi, theta);
+            let p2 = getPointOnSphere(phi + deltaPhi, theta);
+            let p3 = getPointOnSphere(phi, theta + deltaTheta);
+            let p4 = getPointOnSphere(phi + deltaPhi, theta + deltaTheta);
 
-            if (lat < stacks && long < slices) {
-                var first = (lat * (slices + 1)) + long;
-                var second = first + slices + 1;
-                var p1 = [vertices[first * 3], vertices[first * 3 + 1], vertices[first * 3 + 2]];
-                var p2 = [vertices[second * 3], vertices[second * 3 + 1], vertices[second * 3 + 2]];
-                var p3 = [vertices[(first + 1) * 3], vertices[(first + 1) * 3 + 1], vertices[(first + 1) * 3 + 2]];
-                addTri(p1, p2, p3);
-                var p4 = [vertices[second * 3], vertices[second * 3 + 1], vertices[second * 3 + 2]];
-                var p5 = [vertices[(second + 1) * 3], vertices[(second + 1) * 3 + 1], vertices[(second + 1) * 3 + 2]];
-                var p6 = [vertices[(first + 1) * 3], vertices[(first + 1) * 3 + 1], vertices[(first + 1) * 3 + 2]];
-                addTri(p4, p5, p6);
-            }
+            // Generate two triangles for each quad on the sphere
+            addTri(p1, p2, p3);
+            addTri(p2, p4, p3);
         }
     }
+}
+
+function getPointOnSphere(phi, theta) {
+    const radius = 0.5;
+
+    // Convert from spherical to Cartesian coordinates
+    const x = radius * Math.sin(phi) * Math.cos(theta);
+    const y = radius * Math.sin(phi) * Math.sin(theta);
+    const z = radius * Math.cos(phi);
+    return [x, y, z];
 }
 
 ////////////////////////////////////////////////////////////////////
