@@ -96,8 +96,55 @@ function addTri(p1, p2, p3) {
 // the number of subdivisions aj the surface of the cylinder given by
 //heightdivision.
 //
-function makeCylinder (radialdivision,heightdivision){
-    // fill in your code here.
+function makeCylinder(radialdivision, heightdivision) {
+    const twoPi = Math.PI * 2;
+    const radius = 0.5;
+    const height = 1;
+
+    // Helper function to convert polar to Cartesian coordinates for the cylinder's circle
+    function polarToCartesian(r, theta, y) {
+        return [
+            r * Math.cos(theta),
+            y,
+            r * Math.sin(theta)
+        ];
+    }
+
+    // Generate the top and bottom circle (discs) of the cylinder
+    for (let i = 0; i < radialdivision; i++) {
+        let theta1 = (i / radialdivision) * twoPi;
+        let theta2 = ((i + 1) % radialdivision) / radialdivision * twoPi;
+
+        let bottom1 = polarToCartesian(radius, theta1, -0.5);
+        let bottom2 = polarToCartesian(radius, theta2, -0.5);
+        let top1 = polarToCartesian(radius, theta1, 0.5);
+        let top2 = polarToCartesian(radius, theta2, 0.5);
+
+        // Add triangles for the top and bottom
+        addTri([ 0, -0.5, 0 ], bottom1, bottom2); // Bottom
+        addTri([ 0, 0.5, 0 ], top2, top1); // Top
+    }
+
+    // Generate the side surface of the cylinder
+    for (let j = 0; j < radialdivision; j++) {
+        for (let i = 0; i < heightdivision; i++) {
+            let theta1 = (j / radialdivision) * twoPi;
+            let theta2 = ((j + 1) % radialdivision) / radialdivision * twoPi;
+
+            let y1 = -0.5 + (i / heightdivision) * height;
+            let y2 = -0.5 + ((i + 1) / heightdivision) * height;
+
+            // Corners of the rectangle
+            let p1 = polarToCartesian(radius, theta1, y1);
+            let p2 = polarToCartesian(radius, theta2, y1);
+            let p3 = polarToCartesian(radius, theta1, y2);
+            let p4 = polarToCartesian(radius, theta2, y2);
+
+            // Add triangles for the sides, form rectangles by combining two triangles
+            addTri(p1, p2, p3);
+            addTri(p3, p2, p4);
+        }
+    }
 }
 
 
