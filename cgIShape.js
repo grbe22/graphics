@@ -108,8 +108,48 @@ function makeCylinder (radialdivision,heightdivision){
 // and the number of subdivisions aj the surface of the cone
 //given by heightdivision.
 //
-function makeCone (radialdivision, heightdivision) {
-    // fill in your code here.
+function makeCone(radialdivision, heightdivision) {
+    const radius = 0.5;
+    const height = 1;
+    const tip = { x: 0, y: height, z: 0 }; // The tip of the cone
+    const baseCenter = { x: 0, y: 0, z: 0 }; // Center point of the base
+    
+    // Create the base
+    for (let i = 0; i < radialdivision; i++) {
+        let theta1 = (i / radialdivision) * 2 * Math.PI;
+        let theta2 = ((i + 1) / radialdivision) * 2 * Math.PI;
+
+        let p1 = { x: baseCenter.x + radius*Math.cos(theta1), y: baseCenter.y, z: baseCenter.z + radius*Math.sin(theta1) };
+        let p2 = { x: baseCenter.x + radius*Math.cos(theta2), y: baseCenter.y, z: baseCenter.z + radius*Math.sin(theta2) };
+
+        addTri(baseCenter, p1, p2);
+    }
+
+    // Create the sides
+    for (let i = 0; i < radialdivision; i++) {
+        for (let j = 0; j < heightdivision; j++) {
+            let theta = (i / radialdivision) * 2 * Math.PI;
+            let nextTheta = ((i + 1) / radialdivision) * 2 * Math.PI;
+            
+            // Calculate lower and upper points for two sides of a segment
+            let lower1 = [ (radius * (heightdivision - j) / heightdivision) * Math.cos(theta),
+                           j / heightdivision,
+                           (radius * (heightdivision - j) / heightdivision) * Math.sin(theta)];
+            let lower2 = [ (radius * (heightdivision - j) / heightdivision) * Math.cos(nextTheta),
+                           j / heightdivision,
+                           (radius * (heightdivision - j) / heightdivision) * Math.sin(nextTheta) ];
+            let upper1 = [ (radius * (heightdivision - (j+1)) / heightdivision) * Math.cos(theta),
+                           (j + 1) / heightdivision,
+                           (radius * (heightdivision - (j+1)) / heightdivision) * Math.sin(theta) ];
+            let upper2 = [ (radius * (heightdivision - (j+1)) / heightdivision) * Math.cos(nextTheta),
+                           (j + 1) / heightdivision,
+                           (radius * (heightdivision - (j+1)) / heightdivision) * Math.sin(nextTheta) ];
+
+            // Create two triangles for this section
+            addTri(lower1, lower2, upper1);
+            addTri(lower2, upper2, upper1);
+        }
+    }
 }
     
 //
