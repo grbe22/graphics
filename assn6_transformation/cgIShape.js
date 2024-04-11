@@ -46,85 +46,33 @@ class Cube extends cgIShape {
         this.makeCube (subdivisions);
     }
     
-    makeCube (subdivisions)  {
-        var w = 0.5;
-		// quality control
-		if (subdivisions < 1) {
-			subdivisions = 1;
-		}
-		this.genFace(w, 0, 0, subdivisions);
-		this.genFace(w, Math.PI / 2, 0, subdivisions);
-		this.genFace(w, Math.PI, 0, subdivisions);
-		this.genFace(w, 3 * (Math.PI / 2), 0, subdivisions);
-		this.genFace(w, 0, Math.PI / 2, subdivisions);
-		this.genFace(w, 0, 3 * (Math.PI / 2), subdivisions);
-	}
+	makeCube(subdivisions) {
+        // Define vertices for a unit cube
+        const vertices = [
+            [0.5, -0.5, -0.5], [-0.5, -0.5, -0.5], [-0.5, 0.5, -0.5], [0.5, 0.5, -0.5], // front face
+            [0.5, -0.5, 0.5], [0.5, 0.5, 0.5], [-0.5, 0.5, 0.5], [-0.5, -0.5, 0.5], // back face
+        ];
 
-
-
-	genFace(w, xRot, zRot, subdivisions) {
-		// front facing face
-		var points = [
-			[ w, w, -w ],
-			[ -w, w, -w ],
-			[ -w, -w, -w ],
-			[ w, -w, -w ]
-		];
-		// rotation in the x-direction
-		var rx = [
-			[1, 0, 0],
-			[0, Math.cos(xRot), -Math.sin(xRot)],
-			[0, Math.sin(xRot), Math.cos(xRot)]
-		]
-		// rotation in the z-direction
-		var rz = [
-			[Math.cos(zRot), 0, Math.sin(zRot)],
-			[0, 1, 0],
-			[-Math.sin(zRot), 0, Math.cos(zRot)]
-		];
-		points = this.multiplyMatrices(points, rx);
-		points = this.multiplyMatrices(points, rz);
-		this.drawFace(points, subdivisions, w);
-	}
-
-	// simple matrix multiplication algorithm. Stolen off stackoverflow.
-	multiplyMatrices(a, b) {
-		var result = [];
-		for (var i = 0; i < a.length; i++) {
-			result[i] = [];
-			for (var j = 0; j < 3; j++) {
-				var sum = 0;
-				for (var k = 0; k < 3; k++) {
-					sum += a[i][k] * b[k][j];
-				}
-				result[i][j] = sum;
-			}
-		}
-		return result;
-	}
-
-	drawFace(points, subdivisions) {
-		if (subdivisions == 1) {
-			super.addTri(points[0], points[1], points[2]);
-			super.addTri(points[2], points[3], points[0]);
-		} else {
-			for (let i = 0; i < 4; i ++) {
-				let pts = [];
-				for (let j = 0; j < 4; j ++) {
-					pts.push(this.vec3Avg(points[i], points[j]));
-				}
-				this.drawFace(pts, subdivisions - 1);
-			}
-		}
-	}
-
-	vec3Avg(father, p) {
-		var point = [];
-		point.push((father[0] + p[0]) / 2);
-		point.push((father[1] + p[1]) / 2);
-		point.push((father[2] + p[2]) / 2);
-		return point;
-	}
+        // Define faces and their indices 
+        const faces = [
+            [0, 1, 2, 3], // front face
+            [4, 5, 6, 7], // back face
+            [3, 2, 6, 5], // top face
+            [0, 4, 7, 1], // bottom face
+            [2, 1, 7, 6], // left face
+            [0, 3, 5, 4], // right face
+        ];
+        
+        for (let i = 0; i < faces.length; i++) {
+			const p1 = vertices[faces[i][0]];
+			const p2 = vertices[faces[i][1]];
+			const p3 = vertices[faces[i][2]];
+			const p4 = vertices[faces[i][3]];
+			
+			super.addTri(p1, p2, p3); // first triangle of the face
+			super.addTri(p4, p1, p3); // second triangle of the face
+        }
+    }
 }
 
 
@@ -136,7 +84,39 @@ class Cylinder extends cgIShape {
     }
     
     makeCylinder (radialdivision,heightdivision){
-        // fill in your cylinder code here
+        const twoPi = Math.PI * 2;
+		const radius = 0.5;
+		const height = 1;
+
+		// Helper function to convert polar to Cartesian coordinates for the cylinder's circle
+		function polarToCartesian(r, theta, y) {
+			return [
+				r * Math.cos(theta),
+				y,
+				r * Math.sin(theta)
+			];
+		}
+
+		// Generate the side surface of the cylinder
+		for (let j = 0; j < radialdivision; j++) {
+			for (let i = 0; i < heightdivision; i++) {
+				let theta1 = (j / radialdivision) * twoPi;
+				let theta2 = ((j + 1) % radialdivision) / radialdivision * twoPi;
+
+				let y1 = -0.5 + (i / heightdivision) * height;
+				let y2 = -0.5 + ((i + 1) / heightdivision) * height;
+
+				// Corners of the rectangle
+				let p1 = polarToCartesian(radius, theta1, y1);
+				let p2 = polarToCartesian(radius, theta2, y1);
+				let p3 = polarToCartesian(radius, theta1, y2);
+				let p4 = polarToCartesian(radius, theta2, y2);
+
+				// Add triangles for the sides, form rectangles by combining two triangles
+				super.addTri(p1, p3, p2);
+				super.addTri(p3, p4, p2);
+			}
+		}
     }
 }
 
@@ -149,8 +129,36 @@ class Cone extends cgIShape {
     
     
     makeCone (radialdivision, heightdivision) {
-    
-        // Fill in your cone code here.
+		const radius = 0.5;
+		const height = 1;
+		const tip = { x: 0, y: height, z: 0 }; // The tip of the cone
+		const baseCenter = { x: 0, y: 0, z: 0 }; // Center point of the base
+
+		// Create the sides
+		for (let i = 0; i < radialdivision; i++) {
+			for (let j = 0; j < heightdivision; j++) {
+				let theta = (i / radialdivision) * 2 * Math.PI;
+				let nextTheta = ((i + 1) / radialdivision) * 2 * Math.PI;
+				
+				// Calculate lower and upper points for two sides of a segment
+				let lower1 = [ (radius * (heightdivision - j) / heightdivision) * Math.cos(theta),
+							   j / heightdivision,
+							   (radius * (heightdivision - j) / heightdivision) * Math.sin(theta)];
+				let lower2 = [ (radius * (heightdivision - j) / heightdivision) * Math.cos(nextTheta),
+							   j / heightdivision,
+							   (radius * (heightdivision - j) / heightdivision) * Math.sin(nextTheta) ];
+				let upper1 = [ (radius * (heightdivision - (j+1)) / heightdivision) * Math.cos(theta),
+							   (j + 1) / heightdivision,
+							   (radius * (heightdivision - (j+1)) / heightdivision) * Math.sin(theta) ];
+				let upper2 = [ (radius * (heightdivision - (j+1)) / heightdivision) * Math.cos(nextTheta),
+							   (j + 1) / heightdivision,
+							   (radius * (heightdivision - (j+1)) / heightdivision) * Math.sin(nextTheta) ];
+
+				// Create two triangles for this section
+				super.addTri(lower2, lower1, upper1);
+				super.addTri(lower2, upper1, upper2);
+			}
+		}
     }
 }
     
@@ -162,8 +170,42 @@ class Sphere extends cgIShape {
     }
     
     makeSphere (slices, stacks) {
-        // fill in your sphere code here
-    }
+        stacks += 1;
+		// Defines the range of phi and theta
+		const pi = Math.PI;
+		const twoPi = 2 * pi;
+
+		// Calculate the change in phi and theta per stack and slice
+		const deltaPhi = pi / stacks;
+		const deltaTheta = twoPi / slices;
+
+		for (let stack = 0; stack < stacks; stack++) {
+			let phi = stack * deltaPhi;
+
+			for (let slice = 0; slice < slices; slice++) {
+				let theta = slice * deltaTheta;
+
+				// Calculate the four vertices of the current quad
+				let p1 = this.getPointOnSphere(phi, theta);
+				let p2 = this.getPointOnSphere(phi + deltaPhi, theta);
+				let p3 = this.getPointOnSphere(phi, theta + deltaTheta);
+				let p4 = this.getPointOnSphere(phi + deltaPhi, theta + deltaTheta);
+
+				// Generate two triangles for each quad on the sphere
+				super.addTri(p1, p2, p3);
+				super.addTri(p2, p4, p3);
+			}
+		}
+	}
+	getPointOnSphere(phi, theta) {
+		const radius = 0.5;
+
+		// Convert from spherical to Cartesian coordinates
+		const x = radius * Math.sin(phi) * Math.cos(theta);
+		const y = radius * Math.sin(phi) * Math.sin(theta);
+		const z = radius * Math.cos(phi);
+		return [x, y, z];
+	}
 
 }
 

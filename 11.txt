@@ -1,0 +1,6 @@
+gourad shading blends light spots, phong is more pinpoint.
+Low shininess increases the size of light spots, high causes small points. it looks more shiny.
+
+KA seems to be an overall color decrease. It increases the intensity of dark spots as it decreases.
+KD increases the size of the dark spots - only a few spots of light persist when maxxed.
+KS causes light spots to appear. Without it, none are visible.

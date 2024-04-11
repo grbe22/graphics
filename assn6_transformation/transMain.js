@@ -7,6 +7,9 @@
   // Global declarations of objects that you will be drawing
   var myTeapot = null;
   var myCube = null;
+  var mySphere = null;
+  var myCyli = null;
+  var myCone = null;
 
 //
 // A function that creates shapes to be drawn and creates a VAO for each
@@ -20,6 +23,15 @@ function createShapes() {
 	
 	myCube = new Cube(2);
 	myCube.VAO = bindVAO(myCube);
+	
+	myCyli = new Cylinder(10, 10);
+	myCyli.VAO = bindVAO(myCyli);
+	
+	mySphere = new Sphere(10, 10);
+	mySphere.VAO = bindVAO(mySphere);
+	
+	myCone = new Cone(10, 10);
+	myCone.VAO = bindVAO(myCone);
 }
 
 
@@ -38,7 +50,7 @@ function setUpCamera() {
     // set up your view
     // defaut is at (0,0,-5) looking at the origin
     let viewMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.lookAt(viewMatrix, [20, -10, 10], [0, 0, 0], [0, 1, 0]);
+    glMatrix.mat4.lookAt(viewMatrix, [0.2, 3, 5], [0, 0, 0], [0, 1, 0]);
     gl.uniformMatrix4fv (program.uViewT, false, viewMatrix);
 }
 
@@ -54,18 +66,70 @@ function setUpCamera() {
 function drawShapes() {
     
     
-    let matrix = glMatrix.mat4.create();
+    let t_matrix = glMatrix.mat4.create();
     // send the model matrix to the shader and draw.
-	gl.uniformMatrix4fv (program.uModelT, false, matrix);
+	glMatrix.mat4.translate(t_matrix, t_matrix, [0, 2, 0]);
+	gl.uniformMatrix4fv (program.uModelT, false, t_matrix);
     gl.bindVertexArray(myTeapot.VAO);
     gl.drawElements(gl.TRIANGLES, myTeapot.indices.length, gl.UNSIGNED_SHORT, 0);
 	
-	matrix = glMatrix.mat4.create();
-	glMatrix.mat4.translate(matrix, matrix, [0, -1, 0]);
-	glMatrix.mat4.scale(matrix, matrix, [2, 2, 2]);
+	let c_matrix = glMatrix.mat4.create();
+	glMatrix.mat4.translate(c_matrix, c_matrix, [0, 1.75, 0]);
+	glMatrix.mat4.scale(c_matrix, c_matrix, [2, .35, 2]);
+	gl.uniformMatrix4fv(program.uModelT, false, c_matrix);
 	gl.bindVertexArray(myCube.VAO);
-	gl.uniformMatrix4fv(program.uModelT, false, matrix);
 	gl.drawElements(gl.TRIANGLES, myCube.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(c_matrix, c_matrix, [1.4, 0, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, c_matrix);
+	gl.drawElements(gl.TRIANGLES, myCube.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(c_matrix, c_matrix, [0, -8, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, c_matrix);
+	gl.drawElements(gl.TRIANGLES, myCube.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(c_matrix, c_matrix, [-1.4, 0, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, c_matrix);
+	gl.drawElements(gl.TRIANGLES, myCube.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(c_matrix, c_matrix, [-1.4, 0, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, c_matrix);
+	gl.drawElements(gl.TRIANGLES, myCube.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(c_matrix, c_matrix, [0, 8, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, c_matrix);
+	gl.drawElements(gl.TRIANGLES, myCube.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	
+	// cylinders
+	let long_cube = glMatrix.mat4.create();
+	gl.bindVertexArray(myCyli.VAO);
+	glMatrix.mat4.scale(long_cube, long_cube, [1, 2.5, 1]);
+	glMatrix.mat4.translate(long_cube, long_cube, [0, .1, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, long_cube);
+	gl.drawElements(gl.TRIANGLES, myCyli.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(long_cube, long_cube, [2.8, 0, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, long_cube);
+	gl.drawElements(gl.TRIANGLES, myCyli.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	glMatrix.mat4.translate(long_cube, long_cube, [-5.6, 0, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, long_cube);
+	gl.drawElements(gl.TRIANGLES, myCyli.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	let s_matrix = glMatrix.mat4.create();
+	glMatrix.mat4.translate(s_matrix, s_matrix, [3, 2.70, 0]);
+	glMatrix.mat4.scale(s_matrix, s_matrix, [1.5, 1.5, 1.5]);
+	gl.uniformMatrix4fv(program.uModelT, false, s_matrix);
+	gl.bindVertexArray(mySphere.VAO);
+	gl.drawElements(gl.TRIANGLES, mySphere.indices.length, gl.UNSIGNED_SHORT, 0);
+	
+	let cone_mat = glMatrix.mat4.create();
+	glMatrix.mat4.scale(cone_mat, cone_mat, [1.5, 1.5, 1.5]);
+	glMatrix.mat4.translate(cone_mat, cone_mat, [-1.9, 1.25, 0]);
+	gl.uniformMatrix4fv(program.uModelT, false, cone_mat);
+	gl.bindVertexArray(myCone.VAO);
+	gl.drawElements(gl.TRIANGLES, myCone.indices.length, gl.UNSIGNED_SHORT, 0);
 }
 
 ///////////////////////////////////////////////////////////////////
