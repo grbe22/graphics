@@ -113,7 +113,7 @@ function setUpPhong(program) {
 	gl.uniform3fv(program.ambientLight, [1.0, 0.2, 0.2]);
   gl.uniform3fv(program.lightPosition, [3, -5, -10]);
   gl.uniform3fv(program.lightColor, [0.3, 0.2, 0.9]);
-  gl.uniform3fv(program.baseColor, [1.0, 1.0, 1.0]);
+  gl.uniform3fv(program.baseColor, [0.5, 1.0, 1.0]);
   gl.uniform1f(program.ka, 0.9);
   gl.uniform1f(program.kd, .8);
   gl.uniform1f(program.ks, 1.5);
