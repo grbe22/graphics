@@ -96,7 +96,7 @@ function drawCurrentShape () {
         
     } else if( curTexture == "myimage" ) {
         // which program are we using
-        program = sphereGlobeProgam;
+        program = sphereGlobeProgram;
         // set up your uniform variables for drawing
         gl.useProgram (program);
         
