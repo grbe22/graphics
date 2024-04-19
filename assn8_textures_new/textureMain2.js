@@ -6,6 +6,7 @@
 
   // The programs
   let sphereGlobeProgram;
+  let guyGlobeProgram;
 
   // the textures
   let worldTexture;
@@ -96,13 +97,13 @@ function drawCurrentShape () {
         
     } else if( curTexture == "myimage" ) {
         // which program are we using
-        program = dogeProgram;
+        program = guyGlobeProgram;
         // set up your uniform variables for drawing
         gl.useProgram (program);
         
         gl.activeTexture (gl.TEXTURE1);
         gl.uniform1i (program.uTheTexture, 1);
-        gl.bindTexture( gl.TEXTURE_2D, dogeTexture);
+        gl.bindTexture( gl.TEXTURE_2D, guyTexture);
         gl.uniform1i (program.uTheTexture, 1);
 
         
