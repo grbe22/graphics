@@ -6,7 +6,6 @@
 
   // The programs
   let sphereGlobeProgram;
-  let guyGlobeProgram;
 
   // the textures
   let worldTexture;
@@ -97,7 +96,7 @@ function drawCurrentShape () {
         
     } else if( curTexture == "myimage" ) {
         // which program are we using
-        program = guyGlobeProgram;
+        program = sphereGlobeProgam;
         // set up your uniform variables for drawing
         gl.useProgram (program);
         
