@@ -136,6 +136,7 @@ function setUpTextures() {
     // get some texture space from the gpu
     worldTexture = gl.createTexture();
     guyTexture = gl.createTexture();
+	perlTexture = gl.createTexture();
     // load the actual image
     const worldImage = new Image();
     worldImage.src = '1_earth_16k.jpg';
@@ -155,19 +156,16 @@ function setUpTextures() {
 		longMap[i] = [1 - value * 255, 0, value * 255, 255];
 	}
 	
-	perlTexture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, perlTexture);
-		
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 64, 64, 0, gl.RGBA, gl.UNSIGNED_BYTE, longMap);
+	
 	// no idea what these do but it's what the interwebs told me to do
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 	
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 64, 64, 0, gl.RGBA, gl.UNSIGNED_BYTE, longMap);
 	
-	// mipmap??!?
-	gl.generateMipmap(gl.TEXTURE_2D);
 	draw();
 	
     worldImage.onload = () => {
