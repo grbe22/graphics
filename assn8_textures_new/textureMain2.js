@@ -89,12 +89,12 @@ function perlinFill() {
 	console.log(perlMap);
 }
 
-function noiseMaker(i, j) {
-	let x = Math.floor(i);
-	let y = Math.floor(j);
+function noiseMaker(x, y) {
+	let i = Math.floor(x);
+	let j = Math.floor(y);
 	
-	let xSmooth = smooth(i - x);
-	let ySmooth = smooth(j - y);
+	let xSmooth = smooth(x - i);
+	let ySmooth = smooth(y - j);
 	
 	let ltDot = dotProduct(i, j, x, y);
 	let rtDot = dotProduct(i + 1, j, x, y);
@@ -111,7 +111,7 @@ function smooth(value) {
 	return (value * value * (3 - (2 * value)));
 }
 
-function dotProduct(x, y, i, j) {
+function dotProduct(i, j, x, y) {
 	let xDiff = i - x;
 	let yDiff = j - y;
 	
