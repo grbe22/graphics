@@ -78,6 +78,7 @@ function perlinFill() {
 	// now we fill the array with useless values
 	// eqp (equivalent position) is the relative position of the element compared to the board.
 	let eqp = little / big;
+	console.log(eqp);
 	for (let i = 0; i < big; i++) {
 		for (let j = 0; j < big; j++) {
 			let output = noiseMaker(eqp * i, eqp * j);
