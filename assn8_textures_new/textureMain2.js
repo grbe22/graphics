@@ -168,8 +168,7 @@ function setUpTextures() {
 	
 	// mipmap??!?
 	gl.generateMipmap(gl.TEXTURE_2D);
-	
-	console.log("???");
+	draw();
 	
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
