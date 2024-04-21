@@ -70,8 +70,8 @@ function perlinFill() {
 	
 	for (let i = 0; i < 6; i++) {
 		for (let j = 0; j < 6; j++) {
-			miniMap[i, j, 0] = Math.random();
-			miniMap[i, j, 1] = Math.random();
+			miniMap[i][j][0] = Math.random();
+			miniMap[i][j][1] = Math.random();
 		}
 	}
 	
@@ -81,7 +81,7 @@ function perlinFill() {
 	for (let i = 0; i < big; i++) {
 		for (let j = 0; j < big; j++) {
 			let output = noiseMaker(eqp * i, eqp * j);
-			perlMap[i, j] = output;
+			perlMap[i][j] = output;
 		}
 	}
 	
@@ -114,8 +114,8 @@ function dotProduct(i, j, x, y) {
 	let xDiff = i - x;
 	let yDiff = j - y;
 	
-	x = miniMap[i, j, 0];
-	y = miniMap[i, j, 1];
+	x = miniMap[i][j][0];
+	y = miniMap[i][j][1];
 	
 	// simple and plainly, the dot product
 	return (xDiff * x + yDiff * y);
