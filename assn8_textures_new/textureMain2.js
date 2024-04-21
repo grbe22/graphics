@@ -82,7 +82,6 @@ function perlinFill() {
 	// now we fill the array with useless values
 	// eqp (equivalent position) is the relative position of the element compared to the board.
 	let eqp = little / big;
-	console.log(eqp);
 	for (let i = 0; i < big; i++) {
 		for (let j = 0; j < big; j++) {
 			let output = noiseMaker(eqp * i, eqp * j);
@@ -116,7 +115,6 @@ function smooth(value) {
 }
 
 function dotProduct(i, j, x, y) {
-	console.log(i, j);
 	let xDiff = i - x;
 	let yDiff = j - y;
 	
@@ -171,6 +169,7 @@ function setUpTextures() {
 	
 	perlTexture.onload = () => {
 		doLoad(perlTexture, perlImage);
+		console.log("Hey what's up?");
 	}
 }
 
