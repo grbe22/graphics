@@ -127,7 +127,7 @@ function dotProduct(i, j, x, y) {
 // Any additional images that you include will need to
 // set up as well.
 //
-function setUpTextures(){
+function setUpTextures() {
     
     // get some texture space from the gpu
     worldTexture = gl.createTexture();
@@ -152,6 +152,7 @@ function setUpTextures(){
 	
 	perlTexture.onload = () => {
 		doLoad(perlTexture, perlImage);
+	}
 }
 
 //
