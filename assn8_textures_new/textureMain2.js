@@ -33,6 +33,7 @@
   var angleInc = 5.0;
 
 function doLoad(theTexture, theImage) {
+	console.log(theImage);
     gl.bindTexture(gl.TEXTURE_2D, theTexture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, theImage);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
