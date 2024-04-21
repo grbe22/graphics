@@ -156,18 +156,22 @@ function setUpTextures() {
 		longMap[i] = [1 - value * 255, 0, value * 255, 255];
 	}
 	
-	gl.bindTexture(gl.TEXTURE_2D, perlTexture);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 64, 64, 0, gl.RGBA, gl.UNSIGNED_BYTE, longMap);
-		
-	// no idea what these do but it's what the interwebs told me to do
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	const canv = document.createElement('canvas');
+	const cx = canv.getContext('2d');
 	
-	gl.bindTexture(gl.TEXTURE_2D, null);
+	canv.width = 64;
+	canv.height = 64;
 	
-	draw();
+	for (let i = 0; i < 64 * 64; i++) { 
+		const pixelColor = longMap[i];
+		ctx.fillStyle = `rgb(${pixelColor[0]}, ${pixelColor[1]}, ${pixelColor[2]})`;
+		ctx.fillRect(x, y, 1, 1);
+	}
+	
+	const imageFrom2DArray = new Image();
+	imageFrom2DArray.src = canvas.toDataURL();
+	
+	doLoad(perlTexture, perlImage);
 	
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
