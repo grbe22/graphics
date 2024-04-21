@@ -168,8 +168,7 @@ function setUpTextures() {
 		cx.fillRect(i % 64, Math.floor(i / 64), 1, 1);
 	}
 	
-	const imageFrom2DArray = new Image();
-	imageFrom2DArray.src = canv.toDataURL();
+	perlImage.src = canv.toDataURL();
 	
 	doLoad(perlTexture, perlImage);
 	
