@@ -171,6 +171,7 @@ function setUpTextures() {
 	perlImage.src = canv.toDataURL();
 	perlImage.onload = () => {
 		doLoad(perlTexture, perlImage);
+		console.log("Luddite..");
 	};
 
     worldImage.onload = () => {
