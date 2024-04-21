@@ -164,8 +164,8 @@ function setUpTextures() {
 	
 	for (let i = 0; i < 64 * 64; i++) { 
 		const pixelColor = longMap[i];
-		ctx.fillStyle = `rgb(${pixelColor[0]}, ${pixelColor[1]}, ${pixelColor[2]})`;
-		ctx.fillRect(x, y, 1, 1);
+		cx.fillStyle = `rgb(${pixelColor[0]}, ${pixelColor[1]}, ${pixelColor[2]})`;
+		cx.fillRect(x, y, 1, 1);
 	}
 	
 	const imageFrom2DArray = new Image();
