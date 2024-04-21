@@ -156,7 +156,7 @@ function setUpTextures() {
 		longMap[i] = [1 - value * 255, 0, value * 255, 255];
 	}
 	
-	const canv = document.createElement('canvas');
+	const canv = document.getElementById('canv');
 	const cx = canv.getContext('2d');
 	
 	canv.width = 64;
