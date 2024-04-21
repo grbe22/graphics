@@ -186,7 +186,8 @@ function drawCurrentShape () {
     // set up texture uniform & other uniforms that you might
     // have added to the shader
     var program;
-
+	console.log(worldTexture);
+	console.log(perlTexture);
     if( curTexture == "globe" ) {
         // which program are we using
         program = sphereGlobeProgram;
