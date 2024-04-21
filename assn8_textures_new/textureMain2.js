@@ -218,6 +218,12 @@ function drawCurrentShape () {
         program = sphereGlobeProgram;
         // set up your uniform variables for drawing
         gl.useProgram (program);
+		
+		gl.activeTexture(gl.TEXTURE1);
+		gl.unfirom1i(program.uTheTexture, 1);
+		gl.bindTexture(gl.TEXTURE_2D, perlTexture);
+		gl.uniform1i(program.uTheTexture, 1);
+		
     }
     
     // set up rotation uniform
