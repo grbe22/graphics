@@ -168,8 +168,8 @@ function setUpTextures() {
 	};
 	
 	perlTexture.onload = () => {
-		doLoad(perlTexture, perlImage);
 		console.log("Hey what's up?");
+		doLoad(perlTexture, perlImage);
 	}
 }
 
