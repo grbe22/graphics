@@ -220,7 +220,7 @@ function drawCurrentShape () {
         gl.useProgram (program);
 		
 		gl.activeTexture(gl.TEXTURE1);
-		gl.unfiorm1i(program.uTheTexture, 1);
+		gl.uniform1i(program.uTheTexture, 1);
 		gl.bindTexture(gl.TEXTURE_2D, perlTexture);
 		gl.uniform1i(program.uTheTexture, 1);
 		
