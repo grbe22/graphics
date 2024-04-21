@@ -169,7 +169,7 @@ function setUpTextures() {
 	}
 	
 	const imageFrom2DArray = new Image();
-	imageFrom2DArray.src = canvas.toDataURL();
+	imageFrom2DArray.src = canv.toDataURL();
 	
 	doLoad(perlTexture, perlImage);
 	
