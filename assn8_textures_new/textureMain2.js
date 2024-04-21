@@ -10,6 +10,10 @@
   // the textures
   let worldTexture;
   let guyTexture;
+  let perlTexture;
+  
+  // I have it global in my C# implementation and im basically ripping it off here
+  let miniMap;
   
   // VAOs for the objects
   var mySphere = null;
@@ -39,6 +43,82 @@ function doLoad(theTexture, theImage) {
     draw();
 }
 
+// credit to yckart and matthew crumley on stack overflow.
+function createArray(length) {
+    var arr = new Array(length || 0),
+        i = length;
+
+    if (arguments.length > 1) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        while(i--) arr[length-1 - i] = createArray.apply(this, args);
+    }
+
+    return arr;
+}
+
+
+function perlinFill() {
+	// creates a 2d array of size [64, 64]
+	const perlMap = createArray(64, 64);
+	// dimensions of big & little array
+	let big = 64.0;
+	let little = 6.0;
+	// creates the smaller map
+	// I implemented perlin in python AND c# earlier this semester for the fun of it. wild that it actually came into play here.
+	// the smaller map is the randomly assigned map.
+	miniMap = createArray(6, 6, 2);
+	
+	for (let i = 0; i < 6; i++) {
+		for (let j = 0; j < 6; j++) {
+			miniMap[i, j, 0] = Math.random();
+			miniMap[i, j, 1] = Math.random();
+		}
+	}
+	
+	// now we fill the array with useless values
+	// eqp (equivalent position) is the relative position of the element compared to the board.
+	let eqp = little / big;
+	for (let i = 0; i < big; i++) {
+		for (let j = 0; j < big; j++) {
+			let output = noiseMaker(eqp * i, eqp * j);
+			perlMap[i, j] = output;
+		}
+	}
+}
+
+function noiseMaker(i, j) {
+	let x = Math.floor(i);
+	let y = Math.floor(j);
+	
+	let xSmooth = smooth(i - x);
+	let ySmooth = smooth(j - y);
+	
+	let ltDot = dotProduct(i, j, x, y);
+	let rtDot = dotProduct(i + 1, j, x, y);
+	let blDot = dotProduct(i, j + 1, x, y);
+	let brDot = dotProduct(i + 1, j + 1, x, y);
+	
+	let topNoise = ltDot + xSmooth * (rtDot - ltDot);
+	let bottomNoise = lbDot + xSmooth * (rbDot - lbDot);
+
+	return (topNoise + ySmooth * (bottomNoise - topNoise));
+}
+
+function smooth(value) {
+	return (value * value * (3 - (2 * value)));
+}
+
+function dotProduct(i, j, x, y) {
+	let xDiff = i - x;
+	let yDiff = j - y;
+	
+	let x = miniMap[i, j, 0];
+	let y = miniMap[i, j, 1];
+	
+	// simple and plainly, the dot product
+	return (xDiff * x + yDiff * y);
+}
+
 //
 // load up the textures you will use in the shader(s)
 // The setup for the globe texture is done for you
@@ -57,6 +137,9 @@ function setUpTextures(){
 	const guyImage = new Image();
 	guyImage.src = 'guy.jpg';
 
+	const perlImage = new Image();
+	perlMap = perlinFill();
+
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
     };
@@ -64,6 +147,9 @@ function setUpTextures(){
 	guyImage.onload = () => {
 		doLoad(guyTexture, guyImage);
 	};
+	
+	perlTexture.onload = () => {
+		doLoad(perlTexture, perlImage);
 }
 
 //
@@ -108,7 +194,7 @@ function drawCurrentShape () {
         
     } else if( curTexture == "proc" ) {
         // which program are we using
-        program = gradientProgram;
+        program = sphereGlobeProgram;
         // set up your uniform variables for drawing
         gl.useProgram (program);
     }
