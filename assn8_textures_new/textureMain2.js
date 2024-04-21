@@ -97,8 +97,8 @@ function noiseMaker(i, j) {
 	
 	let ltDot = dotProduct(i, j, x, y);
 	let rtDot = dotProduct(i + 1, j, x, y);
-	let blDot = dotProduct(i, j + 1, x, y);
-	let brDot = dotProduct(i + 1, j + 1, x, y);
+	let lbDot = dotProduct(i, j + 1, x, y);
+	let rbDot = dotProduct(i + 1, j + 1, x, y);
 	
 	let topNoise = ltDot + xSmooth * (rtDot - ltDot);
 	let bottomNoise = lbDot + xSmooth * (rbDot - lbDot);
