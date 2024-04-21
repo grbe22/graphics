@@ -84,6 +84,8 @@ function perlinFill() {
 			perlMap[i, j] = output;
 		}
 	}
+	
+	console.log(perlMap);
 }
 
 function noiseMaker(i, j) {
@@ -112,8 +114,8 @@ function dotProduct(i, j, x, y) {
 	let xDiff = i - x;
 	let yDiff = j - y;
 	
-	let x = miniMap[i, j, 0];
-	let y = miniMap[i, j, 1];
+	x = miniMap[i, j, 0];
+	y = miniMap[i, j, 1];
 	
 	// simple and plainly, the dot product
 	return (xDiff * x + yDiff * y);
