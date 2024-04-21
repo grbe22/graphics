@@ -111,6 +111,7 @@ function smooth(value) {
 }
 
 function dotProduct(i, j, x, y) {
+	console.log(i, j);
 	let xDiff = i - x;
 	let yDiff = j - y;
 	
