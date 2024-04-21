@@ -33,7 +33,6 @@
   var angleInc = 5.0;
 
 function doLoad(theTexture, theImage) {
-	console.log(theImage);
     gl.bindTexture(gl.TEXTURE_2D, theTexture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, theImage);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -157,8 +156,20 @@ function setUpTextures() {
 	}
 	
 	perlTexture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, perlTexture);
+		
+	// no idea what these do but it's what the interwebs told me to do
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 	
-	doLoad(perlTexture, longMap);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 64, 64, 0, gl.RGBA, gl.UNSIGNED_BYTE, longMap);
+	
+	// mipmap??!?
+	gl.generateMipmap(gl.TEXTURE_2D);
+	
+	console.log("???");
 	
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
@@ -187,8 +198,7 @@ function drawCurrentShape () {
     // set up texture uniform & other uniforms that you might
     // have added to the shader
     var program;
-	console.log(worldTexture);
-	console.log(perlTexture);
+
     if( curTexture == "globe" ) {
         // which program are we using
         program = sphereGlobeProgram;
