@@ -140,7 +140,7 @@ function setUpTextures() {
 	guyImage.src = 'guy.jpg';
 
 	const perlImage = new Image();
-	perlMap = perlinFill();
+	let perlMap = perlinFill();
 
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
