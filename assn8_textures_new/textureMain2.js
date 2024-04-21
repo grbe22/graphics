@@ -66,10 +66,14 @@ function perlinFill() {
 	// creates the smaller map
 	// I implemented perlin in python AND c# earlier this semester for the fun of it. wild that it actually came into play here.
 	// the smaller map is the randomly assigned map.
-	miniMap = createArray(6, 6, 2);
 	
-	for (let i = 0; i < 6; i++) {
-		for (let j = 0; j < 6; j++) {
+	// size 7 eliminates literal edge cases
+	// if it's on the edge it calls the 6th element (7 if you start from 1)
+	// weird hotfix but it works!
+	miniMap = createArray(7, 7, 2);
+	
+	for (let i = 0; i < 7; i++) {
+		for (let j = 0; j < 7; j++) {
 			miniMap[i][j][0] = Math.random();
 			miniMap[i][j][1] = Math.random();
 		}
