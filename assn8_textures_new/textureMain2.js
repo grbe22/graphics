@@ -90,7 +90,7 @@ function perlinFill() {
 		}
 	}
 	
-	console.log(perlMap);
+	return (perlMap);
 }
 
 function noiseMaker(x, y) {
