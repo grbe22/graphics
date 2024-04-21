@@ -156,18 +156,8 @@ function setUpTextures() {
 	}
 	
 	perlTexture = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, perlTexture);
-		
-	// no idea what these do but it's what the interwebs told me to do
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 	
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 64, 64, 0, gl.RGBA, gl.UNSIGNED_BYTE, longMap);
-	
-	// mipmap??!?
-	gl.generateMipmap(gl.TEXTURE_2D);
+	doLoad(perlTexture, longMap);
 	
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
