@@ -169,8 +169,9 @@ function setUpTextures() {
 	}
 	
 	perlImage.src = canv.toDataURL();
-	
+	document.getElementById("al").innerHTML = canv;
 	perlImage.onLoad = () => {
+		console.log("Image is loaded???");
 		doLoad(perlTexture, perlImage);
 	};
 	
