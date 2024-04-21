@@ -170,7 +170,9 @@ function setUpTextures() {
 	
 	perlImage.src = canv.toDataURL();
 	
-	doLoad(perlTexture, perlImage);
+	perlImage.onLoad = () => {
+		doLoad(perlTexture, perlImage);
+	};
 	
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
