@@ -151,7 +151,7 @@ function setUpTextures() {
 	let longMap = createArray(64 * 64, 4);
 	for (let i = 0; i < 64 * 64; i ++) {
 		// gets the value at this location
-		value = perlMap[i % 64][Math.floor(i / 64)] + 1;
+		let value = perlMap[i % 64][Math.floor(i / 64)] + 1;
 		// normalizes betweel 0-1; original is -1 to 1.
 		value = value / 2;
 		longMap[i] = [1 - value * 255, 0, value * 255, 255];
