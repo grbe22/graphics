@@ -168,7 +168,7 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
         gl.bindVertexArray(bridge.VAO);
         gl.drawElements(gl.TRIANGLES, bridge.indices.length, gl.UNSIGNED_SHORT, 0);
         
-        transformMatrix( skyMatrix, skyMatrix, 'rx', 0,0,0, radians(0));
+        transformMatrix( skyMatrix, skyMatrix, 'rx', 0,0,0, radians(30));
         transformMatrix(skyMatrix, skyMatrix, 't', 0,10,10,0);
         //transformMatrix(skyMatrix, skyMatrix, 's', 50,70,10,0);
         transformMatrix( skyMatrix, skyMatrix, 'rz', 0,0,0, radians(0));
