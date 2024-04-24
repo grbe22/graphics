@@ -57,7 +57,7 @@ function setUpCamera(program) {
     
     // set up your view
     let viewMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.lookAt(viewMatrix, [2, 2, -15], [0, 2, 0], [0, 1, 0]);
+    glMatrix.mat4.lookAt(viewMatrix, [0, 4, -15], [0, 2, 0], [0, 1, 0]);
     gl.uniformMatrix4fv (program.uViewT, false, viewMatrix);
 }
 
