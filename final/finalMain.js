@@ -169,7 +169,7 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
         gl.drawElements(gl.TRIANGLES, bridge.indices.length, gl.UNSIGNED_SHORT, 0);
         
         transformMatrix(skyMatrix, skyMatrix, 't', 0,10,0,0);
-        transformMatrix(skyMatrix, skyMatrix, 's', 10,10,10,0);
+        transformMatrix(skyMatrix, skyMatrix, 's', 100,100,1,0);
         transformMatrix( skyMatrix, skyMatrix, 'ry', 0,0,0, radians(0));
         transformMatrix( skyMatrix, skyMatrix, 'rz', 0,0,0, radians(0));
         gl.activeTexture (gl.TEXTURE1);
