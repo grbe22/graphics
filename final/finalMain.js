@@ -177,7 +177,7 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
         gl.uniform1i (program.uTheTexture, 1);
         gl.uniform3fv (program.uTheta, new Float32Array(angles));
         gl.uniformMatrix4fv (program.uModelT, false, skyMatrix);
-        gl.uniform4fv (program.colorChange, [.3,.3,.4,1]);
+        gl.uniform4fv (program.colorChange, [1,1,1,1]);
         gl.bindVertexArray(sky.VAO);
         gl.drawElements(gl.TRIANGLES, sky.indices.length, gl.UNSIGNED_SHORT, 0);
 
