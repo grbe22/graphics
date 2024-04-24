@@ -170,7 +170,7 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
         
         transformMatrix( skyMatrix, skyMatrix, 'rx', 0,0,0, radians(0));
         transformMatrix(skyMatrix, skyMatrix, 't', 0,10,10,0);
-        transformMatrix(skyMatrix, skyMatrix, 's', 50,1,1,0);
+        transformMatrix(skyMatrix, skyMatrix, 's', 10,10,10,0);
         transformMatrix( skyMatrix, skyMatrix, 'rz', 0,0,0, radians(0));
         gl.activeTexture (gl.TEXTURE1);
         gl.bindTexture (gl.TEXTURE_2D, skyTexture);
