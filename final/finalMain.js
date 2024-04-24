@@ -457,7 +457,7 @@ function setUpTexturePhong(program) {
     setUpCamera(textureProgram);
       
     // set up Phong parameters (light Color, light Position)
-    setUpPhong(generalProgram, [.2, .4, .6], [20, -2, 10]);
+    setUpPhong(generalProgram, [.6, .8, 1.0], [20, -2, 10]);
     setUpTexturePhong(textureProgram);
     
     // do a draw
