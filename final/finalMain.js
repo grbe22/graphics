@@ -52,7 +52,7 @@ function setUpCamera(program) {
     
     // set up your projection
     let projMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.perspective(projMatrix, radians(70), 1, 3, 100);
+    glMatrix.mat4.perspective(projMatrix, radians(90), 1, 3, 100);
     gl.uniformMatrix4fv (program.uProjT, false, projMatrix);
     
     // set up your view
