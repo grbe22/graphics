@@ -57,7 +57,7 @@ function setUpCamera(program) {
     
     // set up your view
     let viewMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.lookAt(viewMatrix, [2.4, 2, -11], [0, 2, 0], [0, 1, 0]);
+    glMatrix.mat4.lookAt(viewMatrix, [2, 0, -10], [0, 2, 0], [0, 1, 0]);
     gl.uniformMatrix4fv (program.uViewT, false, viewMatrix);
 }
 
@@ -457,7 +457,7 @@ function setUpTexturePhong(program) {
     setUpCamera(textureProgram);
       
     // set up Phong parameters (light Color, light Position)
-    setUpPhong(generalProgram, [.6, .8, 1.0], [20, -2, 10]);
+    setUpPhong(generalProgram, [2, 2, 10], [20, -2, 10]);
     setUpTexturePhong(textureProgram);
     
     // do a draw
