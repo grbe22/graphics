@@ -156,8 +156,9 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
         gl.bindVertexArray(head.VAO);
         gl.drawElements(gl.TRIANGLES, head.indices.length, gl.UNSIGNED_SHORT, 0);
 
+		// bridge
         transformMatrix( bridgeMatrix, bridgeMatrix, 'ry', 0, 0, 0, radians(90) );
-        transformMatrix( bridgeMatrix, bridgeMatrix, 't', 7, -1, 4, 1);
+        transformMatrix( bridgeMatrix, bridgeMatrix, 't', 0, 0, 0, 1);
         transformMatrix( bridgeMatrix, bridgeMatrix, "s", 15, .2, 2, 5);
         gl.activeTexture (gl.TEXTURE0);
         gl.bindTexture (gl.TEXTURE_2D, woodTexture);
