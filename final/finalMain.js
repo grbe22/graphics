@@ -158,8 +158,8 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
 
 		// bridge
         transformMatrix( bridgeMatrix, bridgeMatrix, 'ry', 0, 0, 0, radians(90) );
-        transformMatrix( bridgeMatrix, bridgeMatrix, 't', 0, 0, 0, 1);
-        transformMatrix( bridgeMatrix, bridgeMatrix, "s", 15, .2, 2, 5);
+        transformMatrix( bridgeMatrix, bridgeMatrix, 't', 0, 0, -10, 1);
+        transformMatrix( bridgeMatrix, bridgeMatrix, "s", 30, .2, 2, 5);
         gl.activeTexture (gl.TEXTURE0);
         gl.bindTexture (gl.TEXTURE_2D, woodTexture);
         gl.uniform1i (program.uTheTexture, 0);
