@@ -9,16 +9,16 @@
   let textureProgram;
   
   // VAOs for the objects
-  var head = null;
+  var water = null;
   var sky = null;
-  var shirt = null;
+  var pillar = null;
   var bridge = null;
 
   // textures
   let woodTexture;
   let skyTexture;
-  let shirtTexture;
-  let headTexture;
+  let pillarTexture;
+  let waterTexture;
 
   // rotation
   var angles = [90.0, 90.0, 0.0];
@@ -29,14 +29,14 @@
 // upon the vertex attributes found in each program
 //
 function createShapes() {
-    head = new Sphere( 40, 40);
-    sky = new Cube( 30 );
-    shirt = new Cube( 40 );
-    bridge = new Cube( 30 );
+    water = new Cube(1);
+    sky = new Cube(1);
+    pillar = new Cylinder(20, 20);
+    bridge = new Cube(1);
 
-    head.VAO = bindVAO (head, textureProgram);
+    water.VAO = bindVAO (water, textureProgram);
     sky.VAO = bindVAO( sky, textureProgram );
-    shirt.VAO = bindVAO( shirt, textureProgram );
+    pillar.VAO = bindVAO( pillar, textureProgram );
     bridge.VAO = bindVAO( bridge, textureProgram );
 }
 
@@ -76,8 +76,8 @@ function setUpTextures(){
     // get some texture space from the gpu
     woodTexture = gl.createTexture();
     skyTexture = gl.createTexture();
-    shirtTexture = gl.createTexture();
-    headTexture = gl.createTexture();
+    pillarTexture = gl.createTexture();
+    waterTexture = gl.createTexture();
     
     // load the actual image
     var woodImage = document.getElementById ('wood-texture')
@@ -101,18 +101,18 @@ function setUpTextures(){
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   
-    var shirtImage = document.getElementById('shirt-texture');
-    shirtImage.crossOrigin = "";
-    gl.bindTexture(gl.TEXTURE_2D, shirtTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, shirtImage.width, shirtImage.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, shirtImage);
+    var pillarImage = document.getElementById('pillar-texture');
+    pillarImage.crossOrigin = "";
+    gl.bindTexture(gl.TEXTURE_2D, pillarTexture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, pillarImage.width, pillarImage.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, pillarImage);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 
-    var headImage = document.getElementById('head-texture');
-    headImage.crossOrigin = "";
-    gl.bindTexture(gl.TEXTURE_2D, headTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, headImage.width, headImage.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, headImage);
+    var waterImage = document.getElementById('water-texture');
+    waterImage.crossOrigin = "";
+    gl.bindTexture(gl.TEXTURE_2D, waterTexture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, waterImage.width, waterImage.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, waterImage);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -137,29 +137,30 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
 //  This function draws all of the shapes required for your scene
 //
     function drawShapes() {
-        let headMatrix = glMatrix.mat4.create();
+        let waterMatrix = glMatrix.mat4.create();
         let bridgeMatrix = glMatrix.mat4.create();
         let skyMatrix = glMatrix.mat4.create();
-        let shirtMatrix = glMatrix.mat4.create();
+        let pillarMatrix = glMatrix.mat4.create();
         var program;
         program = textureProgram;
         gl.useProgram(program);
-        
-        transformMatrix(headMatrix, headMatrix, 't', 1.4, 2, -7, 0);
-        transformMatrix(headMatrix, headMatrix, 's', 1, 1, 1, 0);
-        gl.activeTexture (gl.TEXTURE3);
-        gl.bindTexture (gl.TEXTURE_2D, headTexture);
-        gl.uniform1i (program.uTheTexture, 3);
-        gl.uniform3fv (program.uTheta, new Float32Array(angles));
-        gl.uniformMatrix4fv (program.uModelT, false, headMatrix);
-        gl.uniform4fv (program.colorChange, [.3,.3,.4,1]);
-        gl.bindVertexArray(head.VAO);
-        gl.drawElements(gl.TRIANGLES, head.indices.length, gl.UNSIGNED_SHORT, 0);
+
+		// water
+		transformMatrix(waterMatrix, waterMatrix, 't', 0, -20, 10, 0);
+		transformMatrix(waterMatrix, waterMatrix, 's', 60, 40, 1, 1);
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, waterTexture);
+		gl.uniform1i(program.uTheTexture, 1);
+		gl.uniform3fv(program.uTheta, new Float32Array(angles));
+		gl.uniformMatrix4fv(program.uModelT, false, waterMatrix);
+		gl.uniform4fv(program.colorChange, [.8, .8, .8, 1]);
+		gl.bindVertexArray(water.VAO);
+		gl.drawElements(gl.TRIANGLES, bridge.indices.length, gl.UNSIGNED_SHORT, 0);
 
 		// bridge
         transformMatrix( bridgeMatrix, bridgeMatrix, 'ry', 0, 0, 0, radians(90) );
-        transformMatrix( bridgeMatrix, bridgeMatrix, 't', 0, 0, -10, 1);
-        transformMatrix( bridgeMatrix, bridgeMatrix, "s", 30, .2, 2, 5);
+        transformMatrix( bridgeMatrix, bridgeMatrix, 't', 10, -1, 0, 1);
+        transformMatrix( bridgeMatrix, bridgeMatrix, "s", 45, .2, 5, 5);
         gl.activeTexture (gl.TEXTURE0);
         gl.bindTexture (gl.TEXTURE_2D, woodTexture);
         gl.uniform1i (program.uTheTexture, 0);
@@ -169,31 +170,47 @@ function transformMatrix( matIn, matOut, type, x, y, z, rad ) {
         gl.bindVertexArray(bridge.VAO);
         gl.drawElements(gl.TRIANGLES, bridge.indices.length, gl.UNSIGNED_SHORT, 0);
         
-        transformMatrix( skyMatrix, skyMatrix, 'rx', 0,0,0, radians(0));
+		// sky
         transformMatrix(skyMatrix, skyMatrix, 't', 0,10,10,0);
-        //transformMatrix(skyMatrix, skyMatrix, 's', 50,70,10,0);
-        transformMatrix( skyMatrix, skyMatrix, 'rz', 0,0,0, radians(0));
+		transformMatrix(skyMatrix, skyMatrix, 's', 60, 40, 1, 1);
         gl.activeTexture (gl.TEXTURE1);
         gl.bindTexture (gl.TEXTURE_2D, skyTexture);
         gl.uniform1i (program.uTheTexture, 1);
         gl.uniform3fv (program.uTheta, new Float32Array(angles));
         gl.uniformMatrix4fv (program.uModelT, false, skyMatrix);
-        gl.uniform4fv (program.colorChange, [.3,.3,.4,1]);
+        gl.uniform4fv (program.colorChange, [.6,.6,.8,1]);
         gl.bindVertexArray(sky.VAO);
         gl.drawElements(gl.TRIANGLES, sky.indices.length, gl.UNSIGNED_SHORT, 0);
 
-        transformMatrix( shirtMatrix, shirtMatrix, 't', 1,-1.7, -5,0);
-        transformMatrix( shirtMatrix, shirtMatrix, 's', 1,6,2,0);
-        transformMatrix( shirtMatrix, shirtMatrix, 'ry', 0,0,0, radians(20));
+		// pillars
+        transformMatrix( pillarMatrix, pillarMatrix, 's', .5,6,.5,0);
+		transformMatrix(pillarMatrix, pillarMatrix, 't', 3.5, -.25, -20, 0);
         gl.activeTexture (gl.TEXTURE2);
-        gl.bindTexture (gl.TEXTURE_2D, shirtTexture);
+        gl.bindTexture (gl.TEXTURE_2D, pillarTexture);
         gl.uniform1i (program.uTheTexture, 2);
         gl.uniform3fv (program.uTheta, new Float32Array(angles));
-        gl.uniformMatrix4fv (program.uModelT, false, shirtMatrix);
-        gl.uniform4fv (program.colorChange, [.4,.4,.5,1]);
-      
-        gl.bindVertexArray(shirt.VAO);
-        gl.drawElements(gl.TRIANGLES, shirt.indices.length, gl.UNSIGNED_SHORT, 0);
+
+        gl.uniformMatrix4fv (program.uModelT, false, pillarMatrix);
+        gl.uniform4fv (program.colorChange, [.4,.4,.5,1]);		
+        gl.bindVertexArray(pillar.VAO);
+        gl.drawElements(gl.TRIANGLES, pillar.indices.length, gl.UNSIGNED_SHORT, 0);
+		
+		transformMatrix(pillarMatrix, pillarMatrix, 't', -7, 0, 0, 0);
+		gl.uniformMatrix4fv(program.uModelT, false, pillarMatrix);
+		gl.bindVertexArray(pillar.VAO);
+		gl.drawElements(gl.TRIANGLES, pillar.indices.length, gl.UNSIGNED_SHORT, 0);
+		
+		for (let i = 0; i < 5; i++) {
+			transformMatrix(pillarMatrix, pillarMatrix, 't', 7, 0, 8, 0);
+			gl.uniformMatrix4fv(program.uModelT, false, pillarMatrix);
+			gl.bindVertexArray(pillar.VAO);
+			gl.drawElements(gl.TRIANGLES, pillar.indices.length, gl.UNSIGNED_SHORT, 0);
+			
+			transformMatrix(pillarMatrix, pillarMatrix, 't', -7, 0, 0, 0);
+			gl.uniformMatrix4fv(program.uModelT, false, pillarMatrix);
+			gl.bindVertexArray(pillar.VAO);
+			gl.drawElements(gl.TRIANGLES, pillar.indices.length, gl.UNSIGNED_SHORT, 0);
+		}
   }
 
 
